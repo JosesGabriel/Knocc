@@ -11,6 +11,9 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.9.5",
+    "@nuxtjs/dotenv": "^1.4.1",
+    "dotenv": "^8.2.0",
     "nuxt": "^2.0.0"
   },
   "devDependencies": {

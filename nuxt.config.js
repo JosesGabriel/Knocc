@@ -47,72 +47,30 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    "@nuxtjs/axios",
+    "@nuxtjs/dotenv"
   ],
-  router: {
-    middleware: ["auth", "protectedRoutes"]
-  },
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
   */
- vuetify: {
-  customVariables: ["~/assets/variables.scss"],
-  // defaultAssets: {
-  //   //breaks vuetify icons if added, use other method
-  //   font: true,
-  //   icons: "md"
-  // },
-  icons: {
-    iconfont: "md"
-  },
-  theme: {
-    themes: {
-      // working level of theme
-      light: {
-        background: colors.grey.lighten5,
-        primary: colors.blue,
-        accent: colors.grey.darken3,
-        secondary: "#E5E5E5",
-        info: colors.purple,
-        warning: colors.orange,
-        error: "#F44336",
-        success: "#03DAC5",
-        tertiary: "#B6B6B6",
-        darkcard: "#0c1a2b",
-        lightcard: "#f2f2f2",
-        darkchart: "#00121e",
-        lightchart: "#f2f2f2",
-        successhover: "#4ee5d6",
-        secondarytext: "#455A64",
-        headlinedark: "#263238"
-      },
-      theme: {
-        themes: {
-          light: {
-            background: colors.grey.lighten5,
-            primary: colors.blue,
-            accent: colors.grey.darken3,
-            secondary: "#E5E5E5",
-            info: colors.purple,
-            warning: colors.orange,
-            error: "#F44336",
-            success: "#03DAC5",
-            tertiary: "#B6B6B6",
-            darkoutline: "#1f2f39",
-            lightoutline: "#DADADA",
-            darkcard: "#0c1a2b",
-            lightcard: "#f2f2f2",
-            darkchart: "#00121e",
-            lightchart: "#f2f2f2"
-          },
-          dark: {
-            anchor: colors.blue
-          }
+  vuetify: {
+    customVariables: ['~/assets/variables.scss'],
+    theme: {
+      dark: true,
+      themes: {
+        dark: {
+          primary: colors.blue.darken2,
+          accent: colors.grey.darken3,
+          secondary: colors.amber.darken3,
+          info: colors.teal.lighten1,
+          warning: colors.amber.base,
+          error: colors.deepOrange.accent4,
+          success: colors.green.accent3
         }
       }
     }
-  }
-},
+  },
   /*
   ** Build configuration
   */
