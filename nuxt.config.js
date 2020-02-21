@@ -23,7 +23,22 @@ export default {
         content: process.env.npm_package_description || ""
       }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [
+      {
+        rel: "icon",
+        type: "image/x-icon",
+        href: "/favicon.ico"
+      },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css?family=Nunito+Sans&display=swap"
+      },
+      {
+        rel: "stylesheet",
+        href:
+          "https://fonts.googleapis.com/css?family=Montserrat:400,700,800,900&display=swap"
+      }
+    ]
   },
   /*
    ** Customize the progress-bar color
@@ -32,7 +47,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ["@/assets/css/global.css"],
   /*
    ** Plugins to load before mounting the App
    */
@@ -67,7 +82,8 @@ export default {
           tertiary: "#B6B6B6",
           darkcard: "#0c1a2b",
           lightcard: "#f2f2f2",
-          darkBG: "#00121e"
+          darkBG: "#00121e",
+          darkIcon: "#a1b2d1"
         },
         dark: {
           anchor: colors.blue

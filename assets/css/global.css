@@ -1,0 +1,22 @@
+#app,
+#app div,
+#app a,
+#app span,
+#app table,
+#app thead,
+#app tbody,
+#app tr,
+#app td {
+    font-family: 'Nunito Sans', sans-serif !important;
+}
+.no-transform {
+    text-transform: none !important;
+    text-decoration: none !important;
+    letter-spacing: unset !important;
+}
+.bottomPanel--height {
+    height: calc(100vh - 113px);
+}
+.theme--light.v-tabs-items {
+    background-color: transparent !important;
+}
