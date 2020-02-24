@@ -2,7 +2,12 @@
   <v-container class="pa-0 ma-0 bottomPanel--height">
     <v-row>
       <v-col cols="12" class="px-6">
-        <v-btn block color="success" class="black--text">
+        <v-btn
+          block
+          color="success"
+          class="black--text"
+          @click="inviteToRoomsModal = !inviteToRoomsModal"
+        >
           <v-icon>mdi-account-plus-outline</v-icon>
           <span class="no-transform font-weight-black"
             >Invite to this room</span
@@ -49,12 +54,20 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-dialog v-model="inviteToRoomsModal" persistent max-width="740">
+      <InviteToRoom @close="inviteToRoomsModal = false"
+    /></v-dialog>
   </v-container>
 </template>
 <script>
+import InviteToRoom from "~/components/modals/InviteToRoom";
 export default {
+  components: {
+    InviteToRoom
+  },
   data() {
     return {
+      inviteToRoomsModal: false,
       roomMembers: ["Camus Sartre", "Plato"],
       invitedUsers: ["Friedrich Nietzsche", "Epicurus"]
     };

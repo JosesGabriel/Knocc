@@ -14,6 +14,9 @@
     text-decoration: none !important;
     letter-spacing: unset !important;
 }
+.modalContent__container {
+    padding: 0 40px !important;
+  }
 .bottomPanel--height {
     height: calc(100vh - 113px);
 }

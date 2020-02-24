@@ -90,7 +90,7 @@
         </v-col>
       </v-row>
     </div>
-    <!-- end list of commnities -->
+    <!-- end list of communities -->
     <v-dialog v-model="exploreRoomsModal" persistent max-width="740">
       <ExploreRooms @close="exploreRoomsModal = false"
     /></v-dialog>

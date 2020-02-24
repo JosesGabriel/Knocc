@@ -48,20 +48,17 @@
       </v-list>
     </v-card>
     <v-dialog v-model="settingsModal" persistent width="1060">
-      <Settings @close="settingsModal = false"
+      <Settings type="user" @close="settingsModal = false"
     /></v-dialog>
-    <!-- <v-dialog v-model="signoutModal" width="320"> <Signout /></v-dialog> -->
     <!-- end userrow dropdown -->
   </v-container>
 </template>
 
 <script>
 import Settings from "~/components/modals/Settings";
-import Signout from "~/components/modals/Signout";
 export default {
   components: {
-    Settings,
-    Signout
+    Settings
   },
   data() {
     return {

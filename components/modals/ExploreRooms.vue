@@ -6,7 +6,7 @@
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </v-card-title>
-    <v-container class="settingsContent__container">
+    <v-container class="modalContent__container">
       <v-row>
         <v-col cols="12">
           <div>

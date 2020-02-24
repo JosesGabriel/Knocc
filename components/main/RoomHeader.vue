@@ -7,7 +7,12 @@
       <span class="pl-3 font-weight-black">Lyduz Public Community</span>
     </div>
     <div>
-      <v-btn icon small color="darkIcon">
+      <v-btn
+        icon
+        small
+        color="darkIcon"
+        @click="settingsModal = !settingsModal"
+      >
         <v-icon>mdi-settings-outline</v-icon>
       </v-btn>
       <v-btn icon small color="darkIcon">
@@ -30,5 +35,23 @@
         <v-icon>mdi-bell-outline</v-icon>
       </v-btn>
     </div>
+    <v-dialog v-model="settingsModal" persistent width="1060">
+      <Settings type="room" @close="settingsModal = false"
+    /></v-dialog>
   </v-container>
 </template>
+<script>
+import Settings from "~/components/modals/Settings";
+export default {
+  components: {
+    Settings
+  },
+  data() {
+    return {
+      settingsModal: false,
+      roomMembers: ["Camus Sartre", "Plato"],
+      invitedUsers: ["Friedrich Nietzsche", "Epicurus"]
+    };
+  }
+};
+</script>

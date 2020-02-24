@@ -2,8 +2,8 @@
   <v-container class="pa-0 ma-0 roomView--height">
     <div class="message__wrap pa-0">
       <div
-        v-for="message in messagesObject"
-        :key="message"
+        v-for="(message, index) in messagesObject"
+        :key="index"
         class="message__list"
       >
         <v-avatar size="30">

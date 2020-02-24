@@ -1,13 +1,17 @@
 <template>
-  <v-card color="darkcard" dark>
+  <!-- This component is used for both User Settings (from UserRow.vue) and Room Settings (from RoomHeader.vue)
+  Conditional rendering to determine what specific Settings components to use -->
+  <v-card color="darkcard" dark min-height="100">
     <v-card-title class="headline justify-space-between">
       <span></span>
-      <span class="font-weight-black">Settings</span>
+      <span class="font-weight-black">{{
+        type == "room" ? "Room Settings" : "Settings"
+      }}</span>
       <v-btn icon small @click="$emit('close')">
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </v-card-title>
-    <v-container class="settingsContent__container">
+    <v-container class="modalContent__container">
       <v-row>
         <v-col cols="12">
           <v-tabs
@@ -17,8 +21,10 @@
             hide-slider
           >
             <v-tab
-              v-for="settings in settingsNavigation"
-              :key="settings"
+              v-for="(settings, index) in type == 'user'
+                ? userSettingsNavigation
+                : roomSettingsNavigation"
+              :key="index"
               class="settings__tab"
             >
               <v-icon left small>{{ settings.icon }}</v-icon>
@@ -27,18 +33,9 @@
               }}</span>
             </v-tab>
             <v-tab-item class="ml-7">
-              <General />
+              <GeneralUser v-if="type == 'user'" />
+              <GeneralRoom v-else />
             </v-tab-item>
-            <!-- TODO put back when implementing notifications -->
-            <!-- <v-tab-item>
-              <Notifications />
-            </v-tab-item>
-            <v-tab-item>
-              <Preferences />
-            </v-tab-item>
-            <v-tab-item>
-              <Labs />
-            </v-tab-item> -->
           </v-tabs>
         </v-col>
       </v-row>
@@ -47,36 +44,32 @@
 </template>
 
 <script>
-import General from "~/components/user_settings/General";
-import Labs from "~/components/user_settings/Labs";
-import Notifications from "~/components/user_settings/Notifications";
-import Preferences from "~/components/user_settings/Preferences";
+import GeneralUser from "~/components/user_settings/General";
+import GeneralRoom from "~/components/room_settings/General";
 export default {
   components: {
-    General,
-    Labs,
-    Notifications,
-    Preferences
+    GeneralUser,
+    GeneralRoom
+  },
+  props: {
+    type: {
+      default: "",
+      type: String
+    }
   },
   data() {
     return {
-      settingsNavigation: [
+      userSettingsNavigation: [
         {
           label: "General",
           icon: "mdi-settings"
         }
-        // {
-        //   label: "Notifications",
-        //   icon: "mdi-bell-outline"
-        // },
-        // {
-        //   label: "Preferences",
-        //   icon: "mdi-tune-vertical"
-        // },
-        // {
-        //   label: "Labs",
-        //   icon: "mdi-flag-variant-outline"
-        // }
+      ],
+      roomSettingsNavigation: [
+        {
+          label: "General",
+          icon: "mdi-settings"
+        }
       ]
     };
   }
@@ -84,9 +77,6 @@ export default {
 </script>
 
 <style>
-.settingsContent__container {
-  padding: 0 40px;
-}
 .settings__tab {
   margin-right: 40px;
   height: 30px !important;
