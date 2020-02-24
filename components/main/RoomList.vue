@@ -78,15 +78,15 @@
       </v-col>
     </v-row>
     <!-- List of communities start -->
-    <div v-if="communitiesListToggle">
-      <v-row v-for="communities in communitiesList" :key="communities">
+    <div v-show="communitiesListToggle">
+      <v-row v-for="community in communitiesList" :key="community.room_id">
         <v-col cols="2" class="pa-0 pl-7">
-          <v-avatar color="success" size="30">
-            <span class="white--text headline">J</span>
+          <v-avatar size="30"
+            ><v-img :src="community.avatar_url"></v-img>
           </v-avatar>
         </v-col>
         <v-col cols="10" class="pa-0 pt-1 py-3 pl-2">
-          <span>{{ communities }}</span>
+          <span>{{ community.name }}</span>
         </v-col>
       </v-row>
     </div>
@@ -118,11 +118,32 @@ export default {
       tradersListToggle: false,
       communitiesListToggle: false,
       tradersList: ["Friedrich Nietzsche", "Samus Cartre", "Epicurus"],
-      communitiesList: ["Lyduz Community", "Philosopher's Guild"],
+      communitiesList: [],
       exploreRoomsModal: false,
       startChatModal: false,
       createChatroomModal: false
     };
+  },
+  mounted() {
+    this.getRoomList();
+  },
+  methods: {
+    getRoomList() {
+      this.$api.publicRooms
+        .index()
+        .then(response => {
+          this.communitiesList = response.chunk;
+          this.communitiesList.forEach((community, i) => {
+            this.communitiesList[i].avatar_url =
+              process.env.IMAGES_THUMBNAIL_PREFIX +
+              community.avatar_url.substr(6) +
+              "?width=40;height=40;method=crop";
+          });
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
+    }
   }
 };
 </script>

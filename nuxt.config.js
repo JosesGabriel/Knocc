@@ -40,6 +40,7 @@ export default {
       }
     ]
   },
+  auth: {},
   /*
    ** Customize the progress-bar color
    */
@@ -51,7 +52,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [{ src: "~/plugins/repository" }],
   /*
    ** Nuxt.js dev-modules
    */
@@ -59,7 +60,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ["@nuxtjs/axios", "@nuxtjs/dotenv"],
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth", "@nuxtjs/dotenv"],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
