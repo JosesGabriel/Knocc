@@ -128,22 +128,7 @@ export default {
     this.getRoomList();
   },
   methods: {
-    getRoomList() {
-      this.$api.publicRooms
-        .index()
-        .then(response => {
-          this.communitiesList = response.chunk;
-          this.communitiesList.forEach((community, i) => {
-            this.communitiesList[i].avatar_url =
-              process.env.IMAGES_THUMBNAIL_PREFIX +
-              community.avatar_url.substr(6) +
-              "?width=40;height=40;method=crop";
-          });
-        })
-        .catch(error => {
-          console.log(error.response);
-        });
-    }
+    getRoomList() {}
   }
 };
 </script>

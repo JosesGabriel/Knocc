@@ -26,25 +26,28 @@
           ></v-text-field>
         </v-col>
         <v-col cols="4" class="pl-0">
-          <v-select :items="items" label="Lyduz" outlined dense></v-select>
+          <v-select label="Lyduz" outlined dense></v-select>
         </v-col>
       </v-row>
-      <v-row v-for="room in roomList" :key="room">
+      <v-row v-for="room in publicRooms" :key="room.room_id">
         <v-col cols="1" class="pt-1 pr-0">
-          <v-avatar color="success" size="32">
-            <span class="white--text headline">J</span>
-          </v-avatar>
+          <v-avatar size="30"><v-img :src="room.avatar_url"></v-img> </v-avatar>
         </v-col>
         <v-col cols="7" class="py-0 pl-0">
           <div class="font-weight-bold">{{ room.name }}</div>
-          <div class="caption secondary--text">{{ room.ID }}</div>
+          <div class="caption secondary--text">{{ room.canonical_alias }}</div>
         </v-col>
         <v-col cols="3">
           <v-icon small>mdi-account-outline</v-icon>
-          <span class="body-2">913</span>
+          <span class="body-2">{{ room.num_joined_members }}</span>
         </v-col>
         <v-col cols="1" class="pa-0 mt-1">
-          <v-btn text class="success--text no-transform">View</v-btn>
+          <v-btn
+            text
+            class="success--text no-transform"
+            @click="joinRoom(room.room_id)"
+            >View</v-btn
+          >
         </v-col>
       </v-row>
     </v-container>
@@ -56,53 +59,33 @@ export default {
   components: {},
   data() {
     return {
-      roomList: [
-        {
-          name: "Lyduz Public Community",
-          ID: "#public:im.lyduz.com"
-        },
-        {
-          name: "Bug Reports",
-          ID: "#bugreports:im.lyduz.com"
-        },
-        {
-          name: "Lyduz Public Community",
-          ID: "#public:im.lyduz.com"
-        },
-        {
-          name: "Bug Reports",
-          ID: "#bugreports:im.lyduz.com"
-        },
-        {
-          name: "Lyduz Public Community",
-          ID: "#public:im.lyduz.com"
-        },
-        {
-          name: "Bug Reports",
-          ID: "#bugreports:im.lyduz.com"
-        },
-        {
-          name: "Bug Reports",
-          ID: "#bugreports:im.lyduz.com"
-        },
-        {
-          name: "Lyduz Public Community",
-          ID: "#public:im.lyduz.com"
-        },
-        {
-          name: "Bug Reports",
-          ID: "#bugreports:im.lyduz.com"
-        },
-        {
-          name: "Lyduz Public Community",
-          ID: "#public:im.lyduz.com"
-        },
-        {
-          name: "Bug Reports",
-          ID: "#bugreports:im.lyduz.com"
-        }
-      ]
+      publicRooms: []
     };
+  },
+  mounted() {
+    this.getPublicRooms();
+  },
+  methods: {
+    getPublicRooms() {
+      this.$api.publicRooms
+        .index()
+        .then(response => {
+          console.log("hakdig");
+          console.log(response.chunk);
+          this.publicRooms = response.chunk;
+          this.publicRooms.forEach((community, i) => {
+            this.publicRooms[i].avatar_url =
+              process.env.IMAGES_THUMBNAIL_PREFIX +
+              community.avatar_url.substr(6) +
+              "?width=40;height=40;method=crop";
+          });
+          console.log(this.publicRooms);
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
+    },
+    joinRoom(id) {}
   }
 };
 </script>
