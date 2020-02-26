@@ -1,3 +1,3 @@
 export default () => ({
-  currentRoom: 0
+  loggedIn: false
 });

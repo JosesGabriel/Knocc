@@ -40,7 +40,6 @@ export default {
       }
     ]
   },
-  auth: {},
   /*
    ** Customize the progress-bar color
    */
@@ -60,7 +59,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ["@nuxtjs/axios", "@nuxtjs/auth", "@nuxtjs/dotenv"],
+  modules: ["@nuxtjs/axios", "@nuxtjs/dotenv"],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module

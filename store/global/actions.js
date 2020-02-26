@@ -1,5 +1,5 @@
 export default {
-  async setLightSwitch({ commit }, data) {
-    await commit("SET_LIGHTSWITCH", data);
+  async setLoggedIn({ commit }, data) {
+    await commit("SET_LOGGEDIN", data);
   }
 };

@@ -1,15 +1,16 @@
 export const client = require("matrix-js-sdk").createClient(
-  `${process.env.VYNDUE_API_URL}`
+  "https://im.lyduz.com"
 );
-export let myToken = "";
-client
+export const access_token = client
   .login("m.login.password", {
-    user: "@lerroux:im.arbitrage.ph",
-    password: "angelus69"
+    user: "sesss",
+    password: "123123123"
   })
   .then(response => {
-    console.log("joses");
-    console.log(response);
-    myToken = response.access_token;
+    client.startClient({
+      accessToken: response.access_token
+    });
+  })
+  .catch(error => {
+    console.log(error.response);
   });
-client.startClient();

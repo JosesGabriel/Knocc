@@ -1,5 +1,5 @@
 export default {
-  SET_LIGHTSWITCH(state, data) {
-    state.lightSwitch = data;
+  SET_LOGGEDIN(state, data) {
+    state.loggedIn = data;
   }
 };

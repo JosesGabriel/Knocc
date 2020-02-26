@@ -1,5 +1,5 @@
 export default {
-  getLightSwitch(state) {
-    return state.lightSwitch;
+  getLoggedIn(state) {
+    return state.loggedIn;
   }
 };

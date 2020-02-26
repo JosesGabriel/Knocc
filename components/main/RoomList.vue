@@ -79,11 +79,11 @@
     </v-row>
     <!-- List of communities start -->
     <div v-show="communitiesListToggle">
-      <v-row v-for="community in communitiesList" :key="community.room_id">
+      <v-row v-for="community in communitiesList" :key="community.roomId">
         <v-col cols="2" class="pa-0 pl-7">
-          <v-avatar size="30"
+          <!-- <v-avatar size="30"
             ><v-img :src="community.avatar_url"></v-img>
-          </v-avatar>
+          </v-avatar> -->
         </v-col>
         <v-col cols="10" class="pa-0 pt-1 py-3 pl-2">
           <span>{{ community.name }}</span>
@@ -104,6 +104,7 @@
 </template>
 
 <script>
+import { client } from "~/assets/client.js";
 import ExploreRooms from "~/components/modals/ExploreRooms";
 import StartChat from "~/components/modals/StartChat";
 import CreateChatroom from "~/components/modals/CreateChatroom";
@@ -128,7 +129,31 @@ export default {
     this.getRoomList();
   },
   methods: {
-    getRoomList() {}
+    getRoomList() {
+      client.on("sync", state => {
+        switch (state) {
+          case "PREPARED": {
+            console.log(client);
+            // this.communitiesList = client.getRooms();
+            // console.log(
+            //   room.getAvatarUrl("https://im.lyduz.com", 40, 40, "crop")
+            // );
+            // let test = client.room(this.communitiesList[0].roomId);
+            // console.log
+            // console.log(client.getHomeserverUrl());
+            // this.communitiesList.forEach((community, i) => {
+            //   this.communitiesList[i].avatar_url = client.getAvatarUrlForRoom(
+            //     this.communitiesList[i].roomId,
+            //     40,
+            //     40,
+            //     "crop"
+            //   );
+            // });
+            // console.log(this.communitiesList);
+          }
+        }
+      });
+    }
   }
 };
 </script>
