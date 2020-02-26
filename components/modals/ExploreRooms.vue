@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   components: {},
   data() {
@@ -62,11 +63,20 @@ export default {
       publicRooms: []
     };
   },
-  mounted() {
-    this.getPublicRooms();
+  computed: {
+    ...mapGetters({
+      clientIsPrepared: "global/getClientIsPrepared"
+    })
+  },
+  watch: {
+    clientIsPrepared() {
+      if (this.getPublicRooms) {
+        this.getRoomList();
+      }
+    }
   },
   methods: {
-    getPublicRooms() {
+    getRoomList() {
       this.$api.publicRooms
         .index()
         .then(response => {
@@ -77,6 +87,7 @@ export default {
               community.avatar_url.substr(6) +
               "?width=40;height=40;method=crop";
           });
+          console.log(this.publicRooms);
         })
         .catch(error => {
           console.log(error.response);
