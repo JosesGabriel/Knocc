@@ -4,5 +4,8 @@ export default {
   },
   SET_CLIENTISPREPARED(state, data) {
     state.clientIsPrepared = data;
+  },
+  SET_CURRENTROOM(state, data) {
+    state.currentRoom = data;
   }
 };

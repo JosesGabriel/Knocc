@@ -38,11 +38,18 @@
 
     <!-- Start list of 1 is to 1 rooms -->
     <v-list v-show="soloChatsToggle" class="pa-0" dense color="transparent">
-      <v-list-item-group color="success">
+      <v-list-item-group v-model="soloChatsModel" color="success">
         <v-list-item
           v-for="room in soloChatsList"
           :key="room.roomId"
           class="roomList__list-item"
+          @click="
+            selectRoom({
+              roomId: room.roomId,
+              displayName: room.name,
+              avatarUrl: room.avatar_url
+            })
+          "
         >
           <v-list-item-icon class="roomList__item-icon">
             <v-avatar size="30">
@@ -91,11 +98,18 @@
       dense
       color="transparent"
     >
-      <v-list-item-group color="success">
+      <v-list-item-group v-model="communitiesModel" color="success">
         <v-list-item
           v-for="community in communitiesList"
           :key="community.roomId"
           class="roomList__list-item"
+          @click="
+            selectRoom({
+              roomId: community.roomId,
+              displayName: community.name,
+              avatarUrl: community.avatar_url
+            })
+          "
         >
           <v-list-item-icon class="roomList__item-icon">
             <v-avatar size="30">
@@ -126,7 +140,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { client } from "~/assets/client.js";
 import ExploreRooms from "~/components/modals/ExploreRooms";
 import StartChat from "~/components/modals/StartChat";
@@ -144,6 +158,8 @@ export default {
       soloChatsList: [],
       communitiesList: [],
       allRooms: [],
+      soloChatsModel: [],
+      communitiesModel: [],
       exploreRoomsModal: false,
       startChatModal: false,
       createChatroomModal: false,
@@ -152,7 +168,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      clientIsPrepared: "global/getClientIsPrepared"
+      clientIsPrepared: "global/getClientIsPrepared",
+      currentRoom: "global/getCurrentRoom"
     })
   },
   watch: {
@@ -168,6 +185,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      setCurrentRoom: "global/setCurrentRoom"
+    }),
     /**
      * SDK implementation works by getting ALL joined rooms, whether it's a 'community' room or
      * a chatroom with only 2 users.
@@ -212,6 +232,23 @@ export default {
           );
           this.communitiesList.push(this.allRooms[index]);
         }
+      });
+    },
+    /**
+     * Handles user clicks when selecting a room from room list.
+     * Sets vuex 'currentRoom' value
+     *
+     * @param   {Object}  room  contains roomId, displayName and avatarUrl of room
+     *
+     * @return
+     */
+    selectRoom(room) {
+      this.soloChatsModel = false;
+      this.communitiesModel = false;
+      this.setCurrentRoom({
+        roomId: room.roomId,
+        displayName: room.displayName,
+        avatarUrl: room.avatarUrl
       });
     }
   }

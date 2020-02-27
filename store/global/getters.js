@@ -4,5 +4,8 @@ export default {
   },
   getClientIsPrepared(state) {
     return state.clientIsPrepared;
+  },
+  getCurrentRoom(state) {
+    return state.currentRoom;
   }
 };

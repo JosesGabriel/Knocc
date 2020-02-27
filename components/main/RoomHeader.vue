@@ -1,10 +1,10 @@
 <template>
   <v-container class=" ma-0 d-flex justify-space-between">
     <div>
-      <v-avatar color="success" size="30">
-        <span class="white--text headline">J</span>
+      <v-avatar size="30">
+        <v-img :src="currentRoom.avatarUrl"></v-img>
       </v-avatar>
-      <span class="pl-3 font-weight-black">Lyduz Public Community</span>
+      <span class="pl-3 font-weight-black">{{ currentRoom.displayName }}</span>
     </div>
     <div>
       <v-btn
@@ -41,6 +41,7 @@
   </v-container>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import Settings from "~/components/modals/Settings";
 export default {
   components: {
@@ -48,10 +49,13 @@ export default {
   },
   data() {
     return {
-      settingsModal: false,
-      roomMembers: ["Camus Sartre", "Plato"],
-      invitedUsers: ["Friedrich Nietzsche", "Epicurus"]
+      settingsModal: false
     };
+  },
+  computed: {
+    ...mapGetters({
+      currentRoom: "global/getCurrentRoom"
+    })
   }
 };
 </script>

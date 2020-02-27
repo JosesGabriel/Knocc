@@ -4,5 +4,8 @@ export default {
   },
   async setClientIsPrepared({ commit }, data) {
     await commit("SET_CLIENTISPREPARED", data);
+  },
+  async setCurrentRoom({ commit }, data) {
+    await commit("SET_CURRENTROOM", data);
   }
 };
