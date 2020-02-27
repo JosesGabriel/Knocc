@@ -37,16 +37,27 @@
     </v-row>
 
     <!-- Start list of 1 is to 1 rooms -->
-    <div v-show="!soloChatsToggle">
-      <v-row v-for="room in soloChatsList" :key="room.roomId">
-        <v-col cols="2" class="pa-0 pl-7">
-          <v-avatar size="30"><v-img :src="room.avatar_url"></v-img> </v-avatar>
-        </v-col>
-        <v-col cols="10" class="pa-0 pt-1 py-3 pl-2">
-          <span>{{ room.name }}</span>
-        </v-col>
-      </v-row>
-    </div>
+    <v-list v-show="soloChatsToggle" class="pa-0" dense color="transparent">
+      <v-list-item-group color="success">
+        <v-list-item
+          v-for="room in soloChatsList"
+          :key="room.roomId"
+          class="roomList__list-item"
+        >
+          <v-list-item-icon class="roomList__item-icon">
+            <v-avatar size="30">
+              <v-img :src="room.avatar_url"></v-img>
+            </v-avatar>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title
+              class="body-2"
+              v-text="room.name"
+            ></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
     <!-- end list of 1 is to 1 rooms -->
 
     <v-row>
@@ -74,18 +85,32 @@
     </v-row>
 
     <!-- Start list of community chats -->
-    <div v-show="!communitiesListToggle">
-      <v-row v-for="community in communitiesList" :key="community.roomId">
-        <v-col cols="2" class="pa-0 pl-7">
-          <v-avatar size="30">
-            <v-img :src="community.avatar_url"></v-img>
-          </v-avatar>
-        </v-col>
-        <v-col cols="10" class="pa-0 pt-1 py-3 pl-2">
-          <span>{{ community.name }}</span>
-        </v-col>
-      </v-row>
-    </div>
+    <v-list
+      v-show="communitiesListToggle"
+      class="pa-0"
+      dense
+      color="transparent"
+    >
+      <v-list-item-group color="success">
+        <v-list-item
+          v-for="community in communitiesList"
+          :key="community.roomId"
+          class="roomList__list-item"
+        >
+          <v-list-item-icon class="roomList__item-icon">
+            <v-avatar size="30">
+              <v-img :src="community.avatar_url"></v-img>
+            </v-avatar>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title
+              class="body-2"
+              v-text="community.name"
+            ></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
     <!-- end list of community chats -->
 
     <v-dialog v-model="exploreRoomsModal" persistent max-width="740">
@@ -114,8 +139,8 @@ export default {
   },
   data() {
     return {
-      soloChatsToggle: false,
-      communitiesListToggle: false,
+      soloChatsToggle: true,
+      communitiesListToggle: true,
       soloChatsList: [],
       communitiesList: [],
       allRooms: [],
@@ -192,3 +217,18 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.roomList__item-icon {
+  margin: 0;
+  margin-right: 10px !important;
+  margin-top: 3px !important;
+}
+.roomList__list-item {
+  margin: 4px 10px;
+}
+.v-list-item-group .v-list-item--active {
+  border: 1px solid;
+  border-radius: 10px;
+}
+</style>
