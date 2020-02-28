@@ -7,5 +7,8 @@ export default {
   },
   SET_CURRENTROOM(state, data) {
     state.currentRoom = data;
+  },
+  SET_USER(state, data) {
+    state.user = data;
   }
 };

@@ -2,9 +2,9 @@
   <v-container class=" ma-0">
     <div class="userRow" @click="dropdownToggle = !dropdownToggle">
       <v-avatar color="success" size="30">
-        <span class="white--text headline">J</span>
+        <v-img :src="user.avatarUrl"></v-img>
       </v-avatar>
-      <span class="pl-3 font-weight-bold">Sesss</span>
+      <span class="pl-3 font-weight-bold">{{ user.displayName }}</span>
       <v-btn icon small>
         <v-icon>mdi-chevron-down</v-icon>
       </v-btn>
@@ -16,8 +16,10 @@
         <v-list-item-group>
           <v-list-item disabled>
             <v-list-item-content>
-              <v-list-item-title class="white--text">Sessss</v-list-item-title>
-              <v-list-item-subtitle>@sesss:im.lyduz.com</v-list-item-subtitle>
+              <v-list-item-title class="white--text">{{
+                user.displayName
+              }}</v-list-item-title>
+              <v-list-item-subtitle>{{ user.userId }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item
@@ -55,6 +57,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Settings from "~/components/modals/Settings";
 export default {
   components: {
@@ -67,6 +70,11 @@ export default {
       signoutModal: false
     };
   },
+  computed: {
+    ...mapGetters({
+      user: "global/getUser"
+    })
+  },
   mounted() {
     document.addEventListener("click", this.close);
   },
@@ -74,6 +82,13 @@ export default {
     document.removeEventListener("click", this.close);
   },
   methods: {
+    /**
+     * used for closing dropdown toggle when user clicks anywhere outside of the element
+     *
+     * @param   {Object}  e
+     *
+     * @return
+     */
     close(e) {
       if (!this.$el.contains(e.target)) {
         this.dropdownToggle = false;

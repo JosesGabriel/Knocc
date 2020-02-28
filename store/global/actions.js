@@ -7,5 +7,8 @@ export default {
   },
   async setCurrentRoom({ commit }, data) {
     await commit("SET_CURRENTROOM", data);
+  },
+  async setUser({ commit }, data) {
+    await commit("SET_USER", data);
   }
 };

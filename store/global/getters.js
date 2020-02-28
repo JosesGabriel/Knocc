@@ -7,5 +7,8 @@ export default {
   },
   getCurrentRoom(state) {
     return state.currentRoom;
+  },
+  getUser(state) {
+    return state.user;
   }
 };

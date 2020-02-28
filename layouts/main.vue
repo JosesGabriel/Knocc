@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import { client } from "~/assets/client.js";
 import Header from "~/components/Header";
 export default {
@@ -23,13 +23,34 @@ export default {
       overlay: true
     };
   },
-  watch: {},
+  computed: {
+    ...mapGetters({
+      clientIsPrepared: "global/getClientIsPrepared"
+    })
+  },
+  watch: {
+    /**
+     * gets current users data and sets is to the 'user' vuex state
+     *
+     * @return
+     */
+    clientIsPrepared() {
+      const user = client.getUser(client.getUserId());
+      user.avatarUrl = client.mxcUrlToHttp(user.avatarUrl, 40, 40, "crop");
+      this.setUser({
+        userId: user.userId,
+        displayName: user.displayName,
+        avatarUrl: user.avatarUrl
+      });
+    }
+  },
   beforeMount() {
     this.prepareClient();
   },
   mounted() {},
   methods: {
     ...mapActions({
+      setUser: "global/setUser",
       setClientIsPrepared: "global/setClientIsPrepared"
     }),
     prepareClient() {
