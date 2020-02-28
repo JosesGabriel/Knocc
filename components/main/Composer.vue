@@ -8,7 +8,7 @@
       </v-col>
       <v-col cols="11" class="py-0"
         ><v-textarea
-          v-model="textarea"
+          v-model="message"
           solo
           dark
           flat
@@ -18,7 +18,7 @@
           background-color="transparent"
           no-resize
           single-line
-          @keyup.enter=""
+          @keyup.enter="sendMessage"
         ></v-textarea
       ></v-col>
     </v-row>
@@ -26,11 +26,33 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import { client } from "~/assets/client.js";
 export default {
   data() {
     return {
-      textarea: ""
+      message: ""
     };
+  },
+  computed: {
+    ...mapGetters({
+      currentRoom: "global/getCurrentRoom"
+    })
+  },
+  methods: {
+    sendMessage() {
+      const content = {
+        body: this.message,
+        msgtype: "m.text"
+      };
+      client
+        .sendEvent(this.currentRoom.roomId, "m.room.message", content, "")
+        .then(response => {})
+        .catch(e => {
+          // console.log(e);
+        });
+      this.message = "";
+    }
   }
 };
 </script>
