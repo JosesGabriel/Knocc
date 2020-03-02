@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="1" class="pa-0 pl-7 pt-3">
         <v-avatar color="success" size="26">
-          <span class="white--text headline">J</span>
+          <img :src="user.avatarUrl" />
         </v-avatar>
       </v-col>
       <v-col cols="11" class="py-0"
@@ -36,7 +36,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      currentRoom: "global/getCurrentRoom"
+      currentRoom: "global/getCurrentRoom",
+      user: "global/getUser"
     })
   },
   methods: {
