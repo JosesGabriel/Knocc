@@ -7,7 +7,7 @@
         class="message__list"
       >
         <v-avatar size="30">
-          <v-img :src="message.AvatarUrl"></v-img>
+          <img :src="message.AvatarUrl" />
         </v-avatar>
         <div class="message text">
           <div class="px-2 success--text overline">
@@ -94,14 +94,17 @@ export default {
       room.timeline.forEach(event => {
         const sender = client.getUser(event.getSender());
         let modified_avatarUrl = "default.png";
-        if (sender.avatarUrl != null) {
+        if (sender.avatarUrl && sender.avatarUrl.includes("mxc://")) {
           modified_avatarUrl = client.mxcUrlToHttp(
             sender.avatarUrl,
             40,
             40,
             "crop"
           );
+        } else if (sender.avatarUrl && sender.avatarUrl.includes("https://")) {
+          modified_avatarUrl = sender.avatarUrl;
         }
+
         this.messagesObject.unshift({
           AvatarUrl: modified_avatarUrl,
           displayName: event.sender.name,

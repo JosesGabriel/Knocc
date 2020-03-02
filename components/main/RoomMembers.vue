@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 ma-0 bottomPanel--height">
+  <v-container class="pa-0 ma-0">
     <v-row>
       <v-col cols="12" class="px-6">
         <v-btn
@@ -15,7 +15,7 @@
         </v-btn>
       </v-col>
     </v-row>
-    <div class="roomMembers">
+    <div>
       <v-row
         v-for="member in roomMembers"
         :key="member.userId"
@@ -134,7 +134,7 @@ export default {
 <style>
 .roomMembers {
   height: calc(100vh - 162px);
-  overflow: auto;
+  overflow-x: hidden;
 }
 .roomMember__item {
   cursor: pointer;
