@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0 ma-0 roomView--height">
-    <div class="message__wrap">
+    <div class="message__wrap" @scroll="scroll">
       <div
         v-for="(message, index) in messagesObject"
         :key="index"
@@ -30,7 +30,8 @@ import { client } from "~/assets/client.js";
 export default {
   data() {
     return {
-      messagesObject: []
+      messagesObject: [],
+      lastFromToken: ""
     };
   },
   computed: {
@@ -46,6 +47,12 @@ export default {
   },
   mounted() {
     this.getMessages();
+  },
+  created() {
+    document.body.addEventListener("scroll", this.scroll);
+  },
+  destroyed() {
+    document.body.removeEventListener("scroll", this.scroll);
   },
   methods: {
     /**
@@ -94,28 +101,60 @@ export default {
      * @return  {[type]}
      */
     switchRoom() {
-      let room = client.getRoom(this.currentRoom.roomId);
       this.messagesObject = [];
-      room.timeline.forEach(event => {
-        const sender = client.getUser(event.getSender());
-        let modified_avatarUrl = "default.png";
-        if (sender.avatarUrl && sender.avatarUrl.includes("mxc://")) {
-          modified_avatarUrl = client.mxcUrlToHttp(
-            sender.avatarUrl,
-            40,
-            40,
-            "crop"
-          );
-        } else if (sender.avatarUrl && sender.avatarUrl.includes("https://")) {
-          modified_avatarUrl = sender.avatarUrl;
-        }
-
-        this.messagesObject.unshift({
-          AvatarUrl: modified_avatarUrl,
-          displayName: event.sender.name,
-          messagesObject: event.getContent().body
-        });
-      });
+      const params = {
+        roomId: this.currentRoom.roomId
+      };
+      this.$api.rooms.messages(params).then(
+        function(result) {
+          this.getHistoricalMessages(result);
+        }.bind(this)
+      );
+    },
+    getHistoricalMessages(data) {
+      const params = {
+        limit: 30,
+        from: data.start,
+        dir: "b"
+      };
+      this.$api.rooms.history(this.currentRoom.roomId, params).then(
+        function(result) {
+          this.lastFromToken = result.end;
+          result.chunk.forEach(event => {
+            console.log(event);
+            if (event.type == "m.room.message") {
+              let sender = client.getUser(event.user_id);
+              let modified_avatarUrl = "default.png";
+              if (sender.avatarUrl && sender.avatarUrl.includes("mxc://")) {
+                modified_avatarUrl = client.mxcUrlToHttp(
+                  sender.avatarUrl,
+                  40,
+                  40,
+                  "crop"
+                );
+              } else if (
+                sender.avatarUrl &&
+                sender.avatarUrl.includes("https://")
+              ) {
+                modified_avatarUrl = sender.avatarUrl;
+              }
+              this.messagesObject.push({
+                AvatarUrl: modified_avatarUrl,
+                displayName: sender.rawDisplayName,
+                messagesObject: event.content.body
+              });
+            }
+          });
+        }.bind(this)
+      );
+    },
+    scroll(event) {
+      if (event.target.scrollTop == 0) {
+        const params = {
+          start: this.lastFromToken
+        };
+        this.getHistoricalMessages(params);
+      }
     }
   }
 };

@@ -1,4 +1,5 @@
 import createRepository from "~/api/repository";
+import roomRepository from "~/api/room/roomRepository";
 
 export default (ctx, inject) => {
   const initApiRepository = createRepository(ctx.$axios);
@@ -8,7 +9,7 @@ export default (ctx, inject) => {
       register: initApiRepository("/register"),
       login: initApiRepository("/login")
     },
-    publicRooms: initApiRepository("/publicRooms")
+    rooms: roomRepository(ctx.$axios)
   };
   inject("api", api);
 };

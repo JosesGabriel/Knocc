@@ -11,6 +11,7 @@ export const access_token = client
     client.startClient({
       accessToken: response.access_token
     });
+    localStorage.setItem("auth._token.local", response.access_token);
   })
   .catch(error => {
     console.log(error.response);
