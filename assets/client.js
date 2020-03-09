@@ -1,6 +1,7 @@
-export const client = require("matrix-js-sdk").createClient(
-  "https://im.lyduz.com"
-);
+export const client = require("matrix-js-sdk").createClient({
+  baseUrl: "https://im.lyduz.com",
+  timelineSupport: true
+});
 export const access_token = client
   .login("m.login.password", {
     user: "sesss",
