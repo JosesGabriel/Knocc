@@ -1,6 +1,6 @@
-# vuendue
+# Knocc
 
-> Vue Client for Matrix
+> Knocc is a Matrix web client built using the Matrix JS SDK, Matrix client-server API and Vue.
 
 ## Build Setup
 
@@ -18,5 +18,3 @@ $ npm run start
 # generate static project
 $ npm run generate
 ```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
