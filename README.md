@@ -1,6 +1,6 @@
 # Knocc
 
-> Knocc is a Matrix web client built using the Matrix JS SDK, Matrix client-server API and Vue.
+> Knocc is a Matrix web client built using the Matrix JS SDK, Matrix client-server API. Written in Vue
 
 ## Build Setup
 
