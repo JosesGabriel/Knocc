@@ -89,7 +89,6 @@ export default {
         };
         client.createRoom(options).then(response => {
           this.$emit("close");
-          console.log(response);
         });
       }
     }

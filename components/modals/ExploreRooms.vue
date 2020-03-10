@@ -87,7 +87,6 @@ export default {
               community.avatar_url.substr(6) +
               "?width=40;height=40;method=crop";
           });
-          console.log(this.publicRooms);
         })
         .catch(error => {
           console.log(error.response);

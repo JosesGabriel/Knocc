@@ -121,7 +121,6 @@ export default {
         function(result) {
           this.lastFromToken = result.end;
           result.chunk.forEach(event => {
-            console.log(event);
             if (event.type == "m.room.message") {
               let sender = client.getUser(event.user_id);
               let modified_avatarUrl = "default.png";

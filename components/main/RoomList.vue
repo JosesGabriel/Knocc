@@ -43,6 +43,7 @@
           v-for="room in soloChatsList"
           :key="room.roomId"
           class="roomList__list-item"
+          :ripple="false"
           @click="
             selectRoom({
               roomId: room.roomId,
@@ -100,9 +101,12 @@
     >
       <v-list-item-group v-model="communitiesModel" color="success">
         <v-list-item
-          v-for="community in communitiesList"
+          v-for="(community, index) in communitiesList"
           :key="community.roomId"
+          :ripple="false"
           class="roomList__list-item"
+          @mouseenter="(hoverMode = true), (currentRoomHovered = index)"
+          @mouseleave="hoverMode = false"
           @click="
             selectRoom({
               roomId: community.roomId,
@@ -122,6 +126,19 @@
               v-text="community.name"
             ></v-list-item-title>
           </v-list-item-content>
+          <v-spacer />
+          <v-icon
+            v-show="hoverMode && currentRoomHovered == index"
+            small
+            color="white"
+            @click="(roomOptionsMode = true), (currentRoomHovered = index)"
+            >mdi-dots-vertical</v-icon
+          >
+          <RoomOptions
+            v-show="roomOptionsMode && currentRoomHovered == index"
+            :id="community.roomId"
+            class="roomOptions__card"
+          />
         </v-list-item>
       </v-list-item-group>
     </v-list>
@@ -145,11 +162,13 @@ import { client } from "~/assets/client.js";
 import ExploreRooms from "~/components/modals/ExploreRooms";
 import StartChat from "~/components/modals/StartChat";
 import CreateChatroom from "~/components/modals/CreateChatroom";
+import RoomOptions from "~/components/room_options/RoomOptions";
 export default {
   components: {
     ExploreRooms,
     StartChat,
-    CreateChatroom
+    CreateChatroom,
+    RoomOptions
   },
   data() {
     return {
@@ -163,7 +182,9 @@ export default {
       exploreRoomsModal: false,
       startChatModal: false,
       createChatroomModal: false,
-      image: false
+      roomOptionsMode: false,
+      hoverMode: false,
+      currentRoomHovered: false
     };
   },
   computed: {
@@ -184,10 +205,28 @@ export default {
       }
     }
   },
+  mounted() {
+    document.addEventListener("click", this.close);
+  },
+  beforeDestroy() {
+    document.removeEventListener("click", this.close);
+  },
   methods: {
     ...mapActions({
       setCurrentRoom: "global/setCurrentRoom"
     }),
+    /**
+     * trigger when user clicked outside the notification dropdown
+     *
+     * @param   {Event}  e  event
+     *
+     * @return  {Boolean}     returns boolean to all showed dropdown
+     */
+    close(e) {
+      if (!this.$el.contains(e.target)) {
+        this.roomOptionsMode = false;
+      }
+    },
     /**
      * SDK implementation works by getting ALL joined rooms, whether it's a 'community' room or
      * a chatroom with only 2 users.
@@ -267,5 +306,11 @@ export default {
 .v-list-item-group .v-list-item--active {
   border: 1px solid;
   border-radius: 10px;
+}
+.roomOptions__card {
+  position: absolute;
+  left: 24vw;
+  top: 0;
+  z-index: 1;
 }
 </style>
