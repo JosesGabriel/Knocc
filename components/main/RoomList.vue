@@ -16,6 +16,50 @@
         </v-btn> -->
       </v-col>
     </v-row>
+
+    <v-row>
+      <v-col cols="12" class="d-flex justify-space-between pr-7 pl-2 py-1">
+        <v-btn :ripple="false" text @click="invitesToggle = !invitesToggle">
+          <v-icon>{{
+            invitesToggle ? "mdi-chevron-down" : "mdi-chevron-right"
+          }}</v-icon>
+          <span class="font-weight-black body-2">INVITES</span>
+        </v-btn>
+        <v-icon small>mdi-numeric-1-circle-outline</v-icon>
+      </v-col>
+    </v-row>
+    <!-- Start list of invites -->
+    <v-list v-show="invitesToggle" class="pa-0" dense color="transparent">
+      <v-list-item-group v-model="invitesModel" color="success">
+        <v-list-item
+          v-for="room in invitesList"
+          :key="room.roomId"
+          class="roomList__list-item"
+          :ripple="false"
+          @click="
+            selectRoom({
+              roomId: room.roomId,
+              displayName: room.name,
+              avatarUrl: room.avatar_url
+            })
+          "
+        >
+          <v-list-item-icon class="roomList__item-icon">
+            <v-avatar size="30">
+              <v-img :src="room.avatar_url"></v-img>
+            </v-avatar>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title
+              class="body-2"
+              v-text="room.name"
+            ></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+    <!-- end list of invites -->
+
     <v-row>
       <v-col cols="12" class="d-flex justify-space-between pr-7 pl-2 py-1">
         <v-btn :ripple="false" text @click="soloChatsToggle = !soloChatsToggle">
@@ -172,11 +216,14 @@ export default {
   },
   data() {
     return {
+      invitesToggle: true,
       soloChatsToggle: true,
       communitiesListToggle: true,
+      invitesList: [],
       soloChatsList: [],
       communitiesList: [],
       allRooms: [],
+      invitesModel: [],
       soloChatsModel: [],
       communitiesModel: [],
       exploreRoomsModal: false,
@@ -246,23 +293,42 @@ export default {
       roomIDList.forEach((room, index) => {
         this.allRooms[index] = client.getRoom(room.roomId);
         let members = Object.entries(this.allRooms[index].currentState.members);
+
+        //If members length is only 2, that means it's a Direct Message
         if (members.length == 2) {
-          members.forEach(member => {
-            if (member[1].name == this.allRooms[index].name) {
-              this.allRooms[index].avatar_url = member[1].user.avatarUrl;
-              this.allRooms[index].avatar_url = client.mxcUrlToHttp(
-                this.allRooms[index].avatar_url,
-                40,
-                40,
-                "crop"
-              );
-            }
-          });
-          this.soloChatsList.push(this.allRooms[index]);
-        } else if (members.length == 1) {
+          //If timeline length is 0 that means it's a room you're invited to but haven't accepted yet
+          if (room.timeline.length == 0) {
+            this.allRooms[index].avatar_url = this.allRooms[index].getAvatarUrl(
+              client.getHomeserverUrl(),
+              40,
+              40,
+              "crop"
+            );
+            this.invitesList.push(this.allRooms[index]);
+          } else {
+            this.soloChatsList.push(this.allRooms[index]);
+            members.forEach(member => {
+              if (member[1].name == this.allRooms[index].name) {
+                this.allRooms[index].avatar_url = client.getUser(
+                  member[1].userId
+                ).avatarUrl;
+                this.allRooms[index].avatar_url = client.mxcUrlToHttp(
+                  this.allRooms[index].avatar_url,
+                  40,
+                  40,
+                  "crop"
+                );
+              }
+            });
+          }
+        }
+        //If members is only 1 that means it's most probably an 'empty room'
+        else if (members.length == 1) {
           this.allRooms[index].avatar_url = "default.png";
           this.communitiesList.push(this.allRooms[index]);
-        } else {
+        }
+        //If it reaches this condition then that means it's a group chat/community
+        else {
           this.allRooms[index].avatar_url = this.allRooms[index].getAvatarUrl(
             client.getHomeserverUrl(),
             40,
@@ -284,6 +350,7 @@ export default {
     selectRoom(room) {
       this.soloChatsModel = false;
       this.communitiesModel = false;
+      this.invitesModel = false;
       this.setCurrentRoom({
         roomId: room.roomId,
         displayName: room.displayName,
