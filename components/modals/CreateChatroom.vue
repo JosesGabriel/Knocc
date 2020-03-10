@@ -82,11 +82,17 @@ export default {
   methods: {
     createRoom() {
       if (this.clientIsPrepared) {
-        const options = {
+        let options = {
           name: this.roomName,
-          visibility: this.roomIsPublic ? "public" : "private",
-          room_alias_name: this.roomTopic
+          visibility: this.roomIsPublic ? "public" : "private"
         };
+        if (this.roomTopic) {
+          options = {
+            name: this.roomName,
+            visibility: this.roomIsPublic ? "public" : "private",
+            room_alias_name: this.roomTopic ? this.roomTopic : null
+          };
+        }
         client.createRoom(options).then(response => {
           this.$emit("close");
         });
