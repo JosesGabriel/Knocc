@@ -288,39 +288,48 @@ export default {
      *
      * @return
      */
-    getRoomList() {
-      const roomIDList = client.getRooms();
-      roomIDList.forEach((room, index) => {
-        this.allRooms[index] = client.getRoom(room.roomId);
+    async getRoomList() {
+      let allRoomsById = [];
+      let joinedRooms = await client.getJoinedRooms();
+      joinedRooms = joinedRooms.joined_rooms;
+      client.getRooms().forEach(room => {
+        allRoomsById.push(room.roomId);
+      });
+      let invitedRooms = allRoomsById.filter(x => !joinedRooms.includes(x));
+      //Filter out invites from Rooms list
+      joinedRooms = joinedRooms.filter(x => allRoomsById.includes(x));
+
+      invitedRooms.forEach(room => {
+        const invitedRoom = client.getRoom(room);
+        invitedRoom.avatar_url = invitedRoom.getAvatarUrl(
+          client.getHomeserverUrl(),
+          40,
+          40,
+          "crop"
+        );
+        this.invitesList.push(invitedRoom);
+      });
+
+      joinedRooms.forEach((room, index) => {
+        this.allRooms[index] = client.getRoom(room);
         let members = Object.entries(this.allRooms[index].currentState.members);
 
         //If members length is only 2, that means it's a Direct Message
         if (members.length == 2) {
-          //If timeline length is 0 that means it's a room you're invited to but haven't accepted yet
-          if (room.timeline.length == 0) {
-            this.allRooms[index].avatar_url = this.allRooms[index].getAvatarUrl(
-              client.getHomeserverUrl(),
-              40,
-              40,
-              "crop"
-            );
-            this.invitesList.push(this.allRooms[index]);
-          } else {
-            this.soloChatsList.push(this.allRooms[index]);
-            members.forEach(member => {
-              if (member[1].name == this.allRooms[index].name) {
-                this.allRooms[index].avatar_url = client.getUser(
-                  member[1].userId
-                ).avatarUrl;
-                this.allRooms[index].avatar_url = client.mxcUrlToHttp(
-                  this.allRooms[index].avatar_url,
-                  40,
-                  40,
-                  "crop"
-                );
-              }
-            });
-          }
+          this.soloChatsList.push(this.allRooms[index]);
+          members.forEach(member => {
+            if (member[1].name == this.allRooms[index].name) {
+              this.allRooms[index].avatar_url = client.getUser(
+                member[1].userId
+              ).avatarUrl;
+              this.allRooms[index].avatar_url = client.mxcUrlToHttp(
+                this.allRooms[index].avatar_url,
+                40,
+                40,
+                "crop"
+              );
+            }
+          });
         }
         //If members is only 1 that means it's most probably an 'empty room'
         else if (members.length == 1) {
