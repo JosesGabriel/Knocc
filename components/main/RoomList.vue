@@ -237,7 +237,8 @@ export default {
   computed: {
     ...mapGetters({
       clientIsPrepared: "global/getClientIsPrepared",
-      currentRoom: "global/getCurrentRoom"
+      currentRoom: "global/getCurrentRoom",
+      user: "global/getUser"
     })
   },
   watch: {
@@ -253,6 +254,9 @@ export default {
     }
   },
   mounted() {
+    if (this.clientIsPrepared) {
+      this.getRoomList();
+    }
     document.addEventListener("click", this.close);
   },
   beforeDestroy() {
@@ -262,6 +266,7 @@ export default {
     ...mapActions({
       setCurrentRoom: "global/setCurrentRoom"
     }),
+
     /**
      * trigger when user clicked outside the notification dropdown
      *
@@ -286,9 +291,17 @@ export default {
      * profile image of the user you're chatting to.
      * - else use getAvatarUrl method to retrieve avatar_url of specific room
      *
+     * Retrieval of invites to rooms works by getting all known rooms (including invites)
+     * then getting a list of joined rooms. The difference between those two arrays will be the rooms
+     * current user is invited to.
      * @return
      */
     async getRoomList() {
+      this.soloChatsList = [];
+      this.allRooms = [];
+      this.communitiesList = [];
+      this.invitesList = [];
+
       let allRoomsById = [];
       let joinedRooms = await client.getJoinedRooms();
       joinedRooms = joinedRooms.joined_rooms;
@@ -296,6 +309,8 @@ export default {
         allRoomsById.push(room.roomId);
       });
       let invitedRooms = allRoomsById.filter(x => !joinedRooms.includes(x));
+      // console.log("List of rooms invited to [ " + invitedRooms + " ]");
+      // console.log("List of all rooms [ " + allRoomsById + " ]");
       //Filter out invites from Rooms list
       joinedRooms = joinedRooms.filter(x => allRoomsById.includes(x));
 

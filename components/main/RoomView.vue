@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0 ma-0 roomView--height">
-    <div class="message__wrap" @scroll="scroll">
+    <div v-if="roomIsVisible" class="message__wrap" @scroll="scroll">
       <div
         v-for="(message, index) in messagesObject"
         :key="index"
@@ -21,6 +21,32 @@
         </div>
       </div>
     </div>
+    <div
+      v-else
+      max-width="344"
+      class="mx-auto m-0 text-center invitation__container"
+    >
+      <span class="body-1 font-weight-black my-3">
+        Do you want to join {{ currentRoom.displayName }}?
+      </span>
+      <v-img
+        class="mx-auto my-6"
+        :src="currentRoom.avatarUrl"
+        width="40"
+      ></v-img>
+      <v-btn
+        color="success"
+        class="black--text no-transform font-weight-black"
+        @click="acceptRoomInvite()"
+        >Accept</v-btn
+      >
+      <v-btn
+        color="success"
+        text
+        class="black--text no-transform font-weight-black"
+        >Reject</v-btn
+      >
+    </div>
   </v-container>
 </template>
 
@@ -31,7 +57,8 @@ export default {
   data() {
     return {
       messagesObject: [],
-      lastFromToken: ""
+      lastFromToken: "",
+      roomIsVisible: true
     };
   },
   computed: {
@@ -105,11 +132,19 @@ export default {
       const params = {
         roomId: this.currentRoom.roomId
       };
-      this.$api.rooms.messages(params).then(
-        function(result) {
-          this.getHistoricalMessages(result);
-        }.bind(this)
-      );
+      this.$api.rooms
+        .messages(params)
+        .then(
+          function(result) {
+            this.getHistoricalMessages(result);
+            this.roomIsVisible = true;
+          }.bind(this)
+        )
+        .catch(e => {
+          if (e.response.data.errcode == "M_GUEST_ACCESS_FORBIDDEN") {
+            this.roomIsVisible = false;
+          }
+        });
     },
     getHistoricalMessages(data) {
       const params = {
@@ -147,6 +182,12 @@ export default {
         }.bind(this)
       );
     },
+    acceptRoomInvite() {
+      client.joinRoom(this.currentRoom.roomId).then(e => {
+        // console.log(e);
+        console.log("Successfully joined room!");
+      });
+    },
     scroll(event) {
       if (event.target.scrollTop == 0) {
         const params = {
@@ -160,6 +201,10 @@ export default {
 </script>
 
 <style>
+.invitation__container {
+  position: relative;
+  top: 20vh;
+}
 .roomView--height {
   height: calc(100vh - 162px);
 }

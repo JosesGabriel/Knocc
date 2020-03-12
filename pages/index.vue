@@ -11,7 +11,7 @@
             </v-row>
             <v-row>
               <v-col cols="12" class="pa-0">
-                <RoomList class="roomList borderedRow" />
+                <RoomList :key="roomListKey" class="roomList borderedRow" />
               </v-col>
             </v-row>
           </v-container>
@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import { client } from "~/assets/client.js";
 import UserRow from "~/components/main/UserRow";
 import RoomHeader from "~/components/main/RoomHeader";
 import RoomList from "~/components/main/RoomList";
@@ -54,6 +56,57 @@ export default {
     RoomView,
     RoomMembers,
     Composer
+  },
+  data() {
+    return {
+      roomListKey: 0
+    };
+  },
+  computed: {
+    ...mapGetters({
+      clientIsPrepared: "global/getClientIsPrepared",
+      currentRoom: "global/getCurrentRoom",
+      user: "global/getUser"
+    })
+  },
+  watch: {
+    /**
+     * Check if client is prepared before executing getRoomList() method
+     *
+     * @return
+     */
+    clientIsPrepared() {
+      if (this.clientIsPrepared) {
+        this.eventsWatcher();
+      }
+    }
+  },
+  methods: {
+    eventsWatcher() {
+      //Event for receiving invites
+      client.on(
+        "RoomMember.membership",
+        function(event, member) {
+          if (
+            member.membership === "invite" &&
+            member.userId === this.user.userId
+          ) {
+            this.roomListKey++;
+            // console.log("roommembership " + event);
+          }
+        }.bind(this)
+      );
+      client.on(
+        "Room.timeline",
+        function(event, room, toStartOfTimeline) {
+          if (event.getType() == "m.room.member") {
+            if (event.event.sender == this.user.userId) {
+              this.roomListKey++;
+            }
+          }
+        }.bind(this)
+      );
+    }
   }
 };
 </script>
