@@ -9,7 +9,8 @@ export default (ctx, inject) => {
       register: initApiRepository("/register"),
       login: initApiRepository("/login")
     },
-    rooms: roomRepository(ctx.$axios)
+    rooms: roomRepository(ctx.$axios),
+    search: initApiRepository("/user_directory/search")
   };
   inject("api", api);
 };

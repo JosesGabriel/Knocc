@@ -1,10 +1,8 @@
 const baseURL = process.env.API_URL + "/rooms";
-const access_token = localStorage.getItem("auth._token.local");
+
 export default $axios => ({
   messages(params, payload) {
-    return $axios.$get(
-      `${baseURL}/` + params.roomId + `/messages?access_token=` + access_token
-    );
+    return $axios.$get(`${baseURL}/` + params.roomId + `/messages`);
   },
   history(roomId, params) {
     let query = buildParams(params);
@@ -12,9 +10,7 @@ export default $axios => ({
       `${baseURL}/` +
         roomId +
         `/messages` +
-        `${query.length > 0 ? "?" + query : ""}` +
-        `&access_token=` +
-        access_token
+        `${query.length > 0 ? "?" + query : ""}`
     );
   }
 });
