@@ -10,5 +10,10 @@ export default () => ({
     roomId: "",
     displayName: "",
     avatarUrl: ""
+  },
+  alert: {
+    model: false,
+    state: "",
+    message: ""
   }
 });

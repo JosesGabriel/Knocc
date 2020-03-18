@@ -6,6 +6,10 @@
       <v-overlay :value="overlay">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
+      <v-snackbar v-model="snackbar" :color="alert.state ? 'success' : 'error'">
+        {{ alert.message }}
+        <v-btn color="white" text @click="alert.model = false">Close</v-btn>
+      </v-snackbar>
     </v-content>
   </v-app>
 </template>
@@ -20,12 +24,14 @@ export default {
   },
   data() {
     return {
-      overlay: true
+      overlay: true,
+      snackbar: false
     };
   },
   computed: {
     ...mapGetters({
-      clientIsPrepared: "global/getClientIsPrepared"
+      clientIsPrepared: "global/getClientIsPrepared",
+      alert: "global/getAlert"
     })
   },
   watch: {
@@ -42,6 +48,9 @@ export default {
         displayName: user.displayName,
         avatarUrl: user.avatarUrl
       });
+    },
+    alert() {
+      this.snackbar = this.alert.model;
     }
   },
   beforeMount() {

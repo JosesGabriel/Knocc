@@ -10,5 +10,8 @@ export default {
   },
   async setUser({ commit }, data) {
     await commit("SET_USER", data);
+  },
+  async setAlert({ commit }, data) {
+    await commit("SET_ALERT", data);
   }
 };

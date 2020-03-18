@@ -10,5 +10,8 @@ export default {
   },
   SET_USER(state, data) {
     state.user = data;
+  },
+  SET_ALERT(state, data) {
+    state.alert = data;
   }
 };
