@@ -8,12 +8,18 @@
     </v-card-title>
     <v-container class="modalContent__container">
       <v-row>
-        <v-col cols="12" class="pr-1">
-          <v-text-field
+        <v-col cols="12" class="pr-1 pb-0">
+          <v-autocomplete
+            v-model="selected"
+            :items="userSuggestions"
+            item-text="display_name"
+            item-value="user_id"
+            :search-input.sync="search"
+            chips
             outlined
-            placeholder="Email, Name or Username"
             dense
-          ></v-text-field>
+            dark
+          ></v-autocomplete>
         </v-col>
       </v-row>
     </v-container>
@@ -31,6 +37,7 @@
       <v-btn
         color="success"
         class="black--text no-transform px-7 font-weight-bold"
+        @click="sendInvite()"
       >
         Send Invites
       </v-btn>
@@ -39,10 +46,67 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import { client } from "~/assets/client.js";
 export default {
   components: {},
   data() {
-    return {};
+    return {
+      invitationField: "",
+      userSuggestions: [],
+      selected: [],
+      search: null
+    };
+  },
+  computed: {
+    ...mapGetters({
+      clientIsPrepared: "global/getClientIsPrepared",
+      currentRoom: "global/getCurrentRoom"
+    })
+  },
+  watch: {
+    search(e) {
+      const params = {
+        search_term: e
+      };
+      this.$api.search.create(params).then(response => {
+        this.userSuggestions = response.results;
+      });
+    }
+  },
+  methods: {
+    ...mapActions({
+      setAlert: "global/setAlert"
+    }),
+    sendInvite() {
+      if (this.clientIsPrepared) {
+        client
+          .invite(this.currentRoom.roomId, this.selected)
+          .then(response => {
+            this.$emit("close");
+            this.setAlert({
+              model: true,
+              state: true,
+              message: "Successfully sent invite."
+            });
+          })
+          .catch(e => {
+            if (e.errcode == "M_FORBIDDEN") {
+              this.setAlert({
+                model: true,
+                state: false,
+                message: e.message
+              });
+            }
+          });
+      }
+    }
   }
 };
 </script>
+
+<style>
+.suggestions__list {
+  overflow: auto;
+}
+</style>
