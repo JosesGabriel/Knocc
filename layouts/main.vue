@@ -8,7 +8,7 @@
       </v-overlay>
       <v-snackbar v-model="snackbar" :color="alert.state ? 'success' : 'error'">
         {{ alert.message }}
-        <v-btn color="white" text @click="alert.model = false">Close</v-btn>
+        <v-btn color="white" text @click="snackbar = false">Close</v-btn>
       </v-snackbar>
     </v-content>
   </v-app>
