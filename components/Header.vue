@@ -4,7 +4,7 @@
       <router-link to="/">
         <img
           class="pl-2 pt-1"
-          src="logo-light.svg"
+          src="/logo-light.svg"
           alt
           width="125"
           height="auto"

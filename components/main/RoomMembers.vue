@@ -119,7 +119,7 @@ export default {
           "crop"
         );
         if (member.avatarUrl.includes("_matrix/media/unstable"))
-          member.avatarUrl = "default.png";
+          member.avatarUrl = "/default.png";
         this.roomMembers.push({
           displayName: member.rawDisplayName,
           avatarUrl: member.avatarUrl,

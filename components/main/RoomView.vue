@@ -96,7 +96,7 @@ export default {
           }
           if (event.getRoomId() === this.currentRoom.roomId) {
             const sender = client.getUser(event.getSender());
-            let modified_avatarUrl = "default.png";
+            let modified_avatarUrl = "/default.png";
             if (sender.avatarUrl && sender.avatarUrl.includes("mxc://")) {
               modified_avatarUrl = client.mxcUrlToHttp(
                 sender.avatarUrl,
@@ -158,7 +158,7 @@ export default {
           result.chunk.forEach(event => {
             if (event.type == "m.room.message") {
               let sender = client.getUser(event.user_id);
-              let modified_avatarUrl = "default.png";
+              let modified_avatarUrl = "/default.png";
               if (sender.avatarUrl && sender.avatarUrl.includes("mxc://")) {
                 modified_avatarUrl = client.mxcUrlToHttp(
                   sender.avatarUrl,
