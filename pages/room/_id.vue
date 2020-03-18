@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { client } from "~/assets/client.js";
 import UserRow from "~/components/main/UserRow";
 import RoomHeader from "~/components/main/RoomHeader";
@@ -77,11 +77,29 @@ export default {
      */
     clientIsPrepared() {
       if (this.clientIsPrepared) {
+        this.getURLParameter();
         this.eventsWatcher();
       }
     }
   },
+  mounted() {
+    if (this.clientIsPrepared) {
+      this.getURLParameter();
+      this.eventsWatcher();
+    }
+  },
   methods: {
+    ...mapActions({
+      setCurrentRoom: "global/setCurrentRoom"
+    }),
+    getURLParameter() {
+      const room = client.getRoom(this.$route.params.id);
+      this.setCurrentRoom({
+        roomId: this.$route.params.id,
+        displayName: room.name,
+        avatarUrl: room.avatar_url
+      });
+    },
     eventsWatcher() {
       //Event for receiving invites
       client.on(

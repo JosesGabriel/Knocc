@@ -348,7 +348,7 @@ export default {
         }
         //If members is only 1 that means it's most probably an 'empty room'
         else if (members.length == 1) {
-          this.allRooms[index].avatar_url = "default.png";
+          this.allRooms[index].avatar_url = "/default.png";
           this.communitiesList.push(this.allRooms[index]);
         }
         //If it reaches this condition then that means it's a group chat/community
@@ -380,6 +380,7 @@ export default {
         displayName: room.displayName,
         avatarUrl: room.avatarUrl
       });
+      this.$router.push("/room/" + room.roomId);
     }
   }
 };
