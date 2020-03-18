@@ -65,6 +65,7 @@ deploy-dev-server:
     - native
     - ssh
   script:
+    - echo $DEV_USER@$DEV_HOST
     - ssh -t $DEV_USER@$DEV_HOST "whoami &&
       cd /var/www/html/dev.vyndue.com && 
       git pull && 
