@@ -381,6 +381,7 @@ export default {
         avatarUrl: room.avatarUrl
       });
       this.$router.push("/room/" + room.roomId);
+      localStorage.setItem("last_room_id", room.roomId);
     }
   }
 };
