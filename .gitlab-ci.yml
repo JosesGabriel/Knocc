@@ -1,0 +1,77 @@
+image: node:12.14.1
+
+stages:
+  - compile
+  - build
+  - test
+  - staging
+  - production
+
+cache:
+  paths:
+    - node_modules/
+
+#--------- compile stage ---------#    
+install-dependencies:
+  stage: compile
+  tags:
+    - ci
+    - cd
+    - node
+    - docker
+  before_script:
+    - node --version
+    - npm --version
+  script:
+    - npm install
+
+#--------- build stage ---------#  
+build-app:
+  stage: build
+  tags:
+    - ci
+    - cd
+    - node
+    - docker
+  script:
+    - npm run build
+
+#--------- test stage ---------#    
+run-lint:
+  stage: test
+  tags:
+    - ci
+    - cd
+    - node
+    - docker
+  script:
+    - echo "running lint"
+
+run-unit-test:
+  stage: test
+  tags:
+    - ci
+    - cd
+    - node
+    - docker
+  script:
+    - echo "running unit test"
+
+#--------- staging stage ---------#    
+deploy-dev-server:
+  stage: staging
+  tags:
+    - cd
+    - native
+    - ssh
+  script:
+    - ssh -t $DEV_USER@$DEV_HOST "whoami &&
+      cd /var/www/html/dev.vyndue.com && 
+      git pull && 
+      npm install && 
+      npm run build &&
+      pm2 restart 1"
+  only:
+    - develop
+
+
