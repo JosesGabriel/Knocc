@@ -42,16 +42,19 @@ export default {
   },
   methods: {
     sendMessage() {
-      const content = {
-        body: this.message,
-        msgtype: "m.text"
-      };
-      client
-        .sendEvent(this.currentRoom.roomId, "m.room.message", content, "")
-        .then(response => {})
-        .catch(e => {
-          // console.log(e);
-        });
+      if (this.message.trim()) {
+        console.log(this.message);
+        const content = {
+          body: this.$sanitize(this.message),
+          msgtype: "m.text"
+        };
+        client.sendEvent(
+          this.currentRoom.roomId,
+          "m.room.message",
+          content,
+          ""
+        );
+      }
       this.message = "";
     }
   }

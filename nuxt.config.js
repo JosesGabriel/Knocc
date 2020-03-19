@@ -48,7 +48,11 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: "~/plugins/repository" }, { src: "~/plugins/axios" }],
+  plugins: [
+    { src: "~/plugins/repository" },
+    { src: "~/plugins/axios" },
+    { src: "~/plugins/vue-sanitize" }
+  ],
   /*
    ** Nuxt.js dev-modules
    */
