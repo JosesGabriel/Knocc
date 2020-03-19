@@ -13,10 +13,15 @@
           <div class="px-2 success--text overline">
             {{ message.displayName }}
           </div>
-          <p class="px-2 caption">
-            {{
-              message.messagesObject ? message.messagesObject : "[ redacted ]"
-            }}
+          <p
+            class="px-2 caption d-flex"
+            v-html="
+              message.messagesObject ? message.messagesObject : '[ redacted ]'
+            "
+          >
+            <!-- {{
+              
+            }} -->
           </p>
         </div>
       </div>
