@@ -25,7 +25,6 @@
           }}</v-icon>
           <span class="font-weight-black body-2">INVITES</span>
         </v-btn>
-        <v-icon small>mdi-numeric-1-circle-outline</v-icon>
       </v-col>
     </v-row>
     <!-- Start list of invites -->
