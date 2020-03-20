@@ -94,11 +94,16 @@ export default {
     }),
     getURLParameter() {
       const room = client.getRoom(this.$route.params.id);
-      this.setCurrentRoom({
-        roomId: this.$route.params.id,
-        displayName: room.name,
-        avatarUrl: room.avatar_url
-      });
+      if (room) {
+        this.setCurrentRoom({
+          roomId: this.$route.params.id,
+          displayName: room.name,
+          avatarUrl: room.avatar_url
+        });
+      } else {
+        const rooms = client.getRooms();
+        this.$router.replace("/room/" + rooms[0].roomId);
+      }
     },
     eventsWatcher() {
       //Event for receiving invites
