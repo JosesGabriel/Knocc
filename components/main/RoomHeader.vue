@@ -7,18 +7,23 @@
       <span class="pl-3 font-weight-black">{{ currentRoom.displayName }}</span>
     </div>
     <div>
-      <v-btn
+      <!-- <v-btn
         icon
         small
         color="darkIcon"
         @click="settingsModal = !settingsModal"
       >
         <v-icon>mdi-settings-outline</v-icon>
-      </v-btn>
-      <v-btn icon small color="darkIcon">
+      </v-btn> -->
+      <v-btn
+        icon
+        small
+        color="darkIcon"
+        @click="shareRoomModal = !shareRoomModal"
+      >
         <v-icon>mdi-share-variant</v-icon>
       </v-btn>
-      <v-btn icon small color="darkIcon">
+      <!-- <v-btn icon small color="darkIcon">
         <v-icon>mdi-view-grid-outline</v-icon>
       </v-btn>
       <v-btn icon small color="darkIcon">
@@ -33,23 +38,29 @@
       </v-btn>
       <v-btn icon small color="darkIcon">
         <v-icon>mdi-bell-outline</v-icon>
-      </v-btn>
+      </v-btn> -->
     </div>
     <v-dialog v-model="settingsModal" persistent width="1060">
       <Settings type="room" @close="settingsModal = false"
+    /></v-dialog>
+    <v-dialog v-model="shareRoomModal" persistent width="750">
+      <ShareRoom @close="shareRoomModal = false"
     /></v-dialog>
   </v-container>
 </template>
 <script>
 import { mapGetters } from "vuex";
 import Settings from "~/components/modals/Settings";
+import ShareRoom from "~/components/modals/ShareRoom";
 export default {
   components: {
-    Settings
+    Settings,
+    ShareRoom
   },
   data() {
     return {
-      settingsModal: false
+      settingsModal: false,
+      shareRoomModal: false
     };
   },
   computed: {
