@@ -352,12 +352,17 @@ export default {
         }
         //If it reaches this condition then that means it's a group chat/community
         else {
-          this.allRooms[index].avatar_url = this.allRooms[index].getAvatarUrl(
+          const avatarUrl = this.allRooms[index].getAvatarUrl(
             client.getHomeserverUrl(),
             40,
             40,
             "crop"
           );
+          this.allRooms[index].avatar_url = avatarUrl.includes(
+            "unstable/identicon"
+          )
+            ? "/default.png"
+            : avatarUrl;
           this.communitiesList.push(this.allRooms[index]);
         }
       });
