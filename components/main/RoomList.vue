@@ -186,7 +186,6 @@
       </v-list-item-group>
     </v-list>
     <!-- end list of community chats -->
-
     <v-dialog v-model="exploreRoomsModal" persistent max-width="740">
       <ExploreRooms @close="exploreRoomsModal = false"
     /></v-dialog>
@@ -336,12 +335,17 @@ export default {
               this.allRooms[index].avatar_url = client.getUser(
                 member[1].userId
               ).avatarUrl;
-              this.allRooms[index].avatar_url = client.mxcUrlToHttp(
+              const avatar_url = client.mxcUrlToHttp(
                 this.allRooms[index].avatar_url,
                 40,
                 40,
                 "crop"
               );
+              this.allRooms[index].avatar_url = avatar_url
+                ? avatar_url
+                : "/default.png";
+            } else {
+              this.allRooms[index].avatar_url = "/default.png";
             }
           });
         }
