@@ -43,11 +43,20 @@
         </v-col>
         <v-col cols="1" class="pa-0 mt-1">
           <v-btn
+            v-if="room.joined"
             text
             class="success--text no-transform"
-            @click="joinRoom(room.room_id)"
+            @click="viewRoom(room)"
             >View</v-btn
           >
+          <v-btn
+            v-else
+            text
+            class="success--text no-transform"
+            @click="joinRoom(room)"
+          >
+            Join
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -55,7 +64,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+import { client } from "~/assets/client.js";
 export default {
   components: {},
   data() {
@@ -75,24 +85,54 @@ export default {
       }
     }
   },
+  mounted() {
+    this.getRoomList();
+  },
   methods: {
-    getRoomList() {
-      this.$api.publicRooms
-        .index()
-        .then(response => {
-          this.publicRooms = response.chunk;
+    ...mapActions({
+      setCurrentRoom: "global/setCurrentRoom"
+    }),
+    async getRoomList() {
+      let joinedRooms = await client.getJoinedRooms();
+      joinedRooms = joinedRooms.joined_rooms;
+      client.publicRooms(
+        function(err, data) {
+          this.publicRooms = data.chunk;
           this.publicRooms.forEach((community, i) => {
-            this.publicRooms[i].avatar_url =
-              process.env.IMAGES_THUMBNAIL_PREFIX +
-              community.avatar_url.substr(6) +
-              "?width=40;height=40;method=crop";
+            community.joined = false;
+            joinedRooms.forEach(joinedRoom => {
+              if (community.room_id === joinedRooms) {
+                community.joined = true;
+              }
+            });
+
+            const room = client.getRoom(community.room_id);
+            const avatarUrl = room.getAvatarUrl(
+              client.getHomeserverUrl(),
+              40,
+              40,
+              "crop"
+            );
+            community.avatar_url = avatarUrl.includes("unstable/identicon")
+              ? "/default.png"
+              : avatarUrl;
           });
-        })
-        .catch(error => {
-          console.log(error.response);
-        });
+        }.bind(this)
+      );
     },
-    joinRoom(id) {}
+    viewRoom(room) {
+      this.setCurrentRoom({
+        roomId: room.room_id,
+        displayName: room.name,
+        avatarUrl: room.avatar_url
+      });
+      this.$router.push("/room/" + room.room_id);
+      localStorage.setItem("last_room_id", room.room_id);
+    },
+    joinRoom(room) {
+      client.joinRoom(room.room_id).then(e => {});
+      this.viewRoom(room);
+    }
   }
 };
 </script>
