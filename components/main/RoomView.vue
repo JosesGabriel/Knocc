@@ -184,6 +184,12 @@ export default {
               });
             }
           });
+          if (
+            this.messagesObject.length < 10 &&
+            this.lastFromToken != data.start
+          ) {
+            this.getHistoricalMessages({ start: this.lastFromToken });
+          }
         }.bind(this)
       );
     },
