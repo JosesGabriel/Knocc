@@ -45,7 +45,7 @@ export default {
       user.avatarUrl = client.mxcUrlToHttp(user.avatarUrl, 40, 40, "crop");
       this.setUser({
         userId: user.userId,
-        displayName: user.displayName,
+        displayName: user.rawDisplayName,
         avatarUrl: user.avatarUrl
       });
     },
