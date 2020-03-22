@@ -1,3 +1,14 @@
+#
+#--------------------------------------------------------------------------
+# YAML Configuration
+#--------------------------------------------------------------------------
+#
+# We are strictly implementing the Scaled Trunk-Based Development Branching Strategy in this project
+# Please read the guidelines first before proceeding.
+#
+# For changes, please contact Karl Anthony Baluyot (karl@arbitrage.ph).
+#
+
 image: node:12.14.1
 
 stages:
@@ -5,7 +16,6 @@ stages:
   - build
   - test
   - staging
-  - production
 
 cache:
   paths:
@@ -24,6 +34,12 @@ install-dependencies:
     - npm --version
   script:
     - npm install
+  only:
+    refs:
+      - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == "master"
 
 #--------- build stage ---------#  
 build-app:
@@ -35,6 +51,12 @@ build-app:
     - docker
   script:
     - npm run build
+  only:
+    refs:
+      - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == "master"
 
 #--------- test stage ---------#    
 run-lint:
@@ -46,6 +68,12 @@ run-lint:
     - docker
   script:
     - echo "running lint"
+  only:
+    refs:
+      - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == "master"
 
 run-unit-test:
   stage: test
@@ -56,22 +84,35 @@ run-unit-test:
     - docker
   script:
     - echo "running unit test"
+  only:
+    refs:
+      - merge_requests
+  except:
+    variables:
+      - $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME == "master"
 
 #--------- staging stage ---------#    
-deploy-dev-server:
+deploy-staging-server:
   stage: staging
   tags:
     - cd
     - native
     - ssh
   script:
-    - echo $DEV_USER@$DEV_HOST
-    - ssh -t $DEV_USER@$DEV_HOST "whoami &&
-      cd /var/www/html/dev.vyndue.com && 
-      git pull && 
+    - ssh -t $USER@$HOST "whoami &&
+      cd /var/www/html/dev.vyndue.com &&
+      git remote prune origin && 
+      git checkout master &&
+      git pull origin master && 
+      git checkout $CI_COMMIT_SHA &&
       npm install && 
       npm run build &&
       pm2 restart 1"
+  environment:
+    name: staging
+    url: https://dev.vyndue.com
   only:
-    - develop
-
+    - master
+  except:
+    - merge_requests
+    - tags
