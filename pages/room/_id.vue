@@ -17,22 +17,21 @@
           </v-container>
         </v-col>
         <v-col cols="9" class="pa-0">
-          <v-container class="py-0">
-            <v-row>
-              <v-col cols="12" class="pa-0">
-                <RoomHeader class="roomHeader borderedRow"
-              /></v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="8" class="pa-0">
-                <RoomView class="roomView borderedRow" />
-                <Composer class="composer borderedRow" />
-              </v-col>
-              <v-col cols="4" class="pa-0">
-                <RoomMembers class="roomMembers borderedRow" />
-              </v-col>
-            </v-row> </v-container
-        ></v-col>
+          <v-row no-gutters>
+            <v-col cols="12" class="pa-0">
+              <RoomHeader class="roomHeader borderedRow" />
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col cols="8" class="pa-0">
+              <RoomView class="roomView borderedRow" />
+              <Composer class="composer borderedRow" />
+            </v-col>
+            <v-col cols="4" class="pa-0">
+              <RoomMembers class="roomMembers borderedRow" />
+            </v-col>
+          </v-row>
+        </v-col>
       </v-row>
     </v-container>
   </v-card>
@@ -56,6 +55,21 @@ export default {
     RoomView,
     RoomMembers,
     Composer
+  },
+  head() {
+    return {
+      title: this.currentRoom.displayName,
+      meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { property: "og:title", content: this.currentRoom.displayName },
+        {
+          property: "og:description",
+          content: this.currentRoom.displayName
+        },
+        { property: "og:type", content: "website" }
+      ]
+    };
   },
   data() {
     return {
@@ -87,6 +101,7 @@ export default {
       this.getURLParameter();
       this.eventsWatcher();
     }
+    console.log(this.currentRoom);
   },
   methods: {
     ...mapActions({

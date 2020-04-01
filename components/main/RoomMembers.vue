@@ -1,6 +1,6 @@
 <template>
   <v-container class="pa-0 ma-0">
-    <v-row>
+    <v-row no-gutters>
       <v-col cols="12" class="px-6">
         <v-btn
           block
@@ -20,9 +20,10 @@
         v-for="member in roomMembers"
         :key="member.userId"
         class="roomMember__item"
+        no-gutters
       >
-        <v-col cols="2" class="pa-0 pl-7">
-          <v-avatar size="30">
+        <v-col cols="2" class="pa-0">
+          <v-avatar class="mx-auto d-block" size="30">
             <v-img :src="member.avatarUrl"></v-img>
           </v-avatar>
         </v-col>

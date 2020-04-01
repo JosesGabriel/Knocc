@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 ma-0 bottomPanel--height">
+  <v-container class="pa-0 ma-0 overflow-y-auto overflow-x-hidden bottomPanel--height">
     <v-row>
       <v-col cols="12" class="pt-1">
         <v-btn

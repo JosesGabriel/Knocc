@@ -1,4 +1,4 @@
-# vuendue
+# Vyndue
 
 > Vue Client for Matrix
 
