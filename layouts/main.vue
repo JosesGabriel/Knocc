@@ -3,7 +3,7 @@
     <v-content class="darkBG">
       <Header class="header__container" />
       <nuxt />
-      <v-overlay :value="overlay">
+      <v-overlay :value="overlay && this.$route.name != 'login'">
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
       <v-snackbar v-model="snackbar" :color="alert.state ? 'success' : 'error'">

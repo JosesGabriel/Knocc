@@ -12,7 +12,7 @@
       </v-btn>
     </div>
     <div>
-      <v-list class="pa-0" dense color="transparent">
+      <v-list class="pt-0" dense color="transparent">
         <template v-for="(member, index) in roomMembers">
           <v-hover v-slot:default="{ hover }">
             <v-list-item :key="member.userId" @click>
