@@ -12,6 +12,7 @@
           <v-btn
             block
             class="success no-transform black--text d-block mx-auto"
+            @click="redirectTo"
           >Sign in with single sign-on</v-btn>
           <v-btn text class="no-transform success--text d-block mx-auto mt-2">New user? Sign up</v-btn>
         </div>
@@ -21,7 +22,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    redirectTo() {
+      window.location.href = "http://localhost:6969/sso";
+    }
+  }
+};
 </script>
 
 <style scoped>
