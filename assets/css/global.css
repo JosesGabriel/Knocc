@@ -1,6 +1,7 @@
 #app,
 #app div,
 #app a,
+#app p,
 #app span,
 #app table,
 #app thead,
@@ -9,32 +10,42 @@
 #app td {
     font-family: 'Nunito Sans', sans-serif !important;
 }
+
 .no-transform {
     text-transform: none !important;
     text-decoration: none !important;
     letter-spacing: unset !important;
 }
+
 .modalContent__container {
     padding: 0 40px !important;
-  }
+}
+
 .bottomPanel--height {
     height: calc(100vh - 113px);
 }
+
 .theme--light.v-tabs-items {
     background-color: transparent !important;
 }
+
+
 /* Custom Scrollbar */
+
 #app ::-webkit-scrollbar {
     width: 5px;
 }
+
 #app ::-webkit-scrollbar-track {
     background: transparent;
     border-radius: 10px;
 }
+
 #app ::-webkit-scrollbar-thumb {
-    background: #e5e5e5;
+    background: #33414b;
     border-radius: 20px;
 }
+
 #app ::-webkit-scrollbar-thumb:hover {
-    background: #e5e5e5;
+    background: #33414b;
 }

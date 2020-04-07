@@ -1,13 +1,13 @@
 <template>
-  <v-container class="pa-0 ma-0">
-    <v-row>
-      <v-col cols="1" class="pa-0 pl-7 pt-3">
-        <v-avatar color="success" size="26">
+  <div class="pa-0 ma-0">
+    <v-row no-gutters>
+      <v-col cols="1" class="pt-3">
+        <v-avatar color="success" class="mx-auto d-block" size="26">
           <img :src="user.avatarUrl" />
         </v-avatar>
       </v-col>
-      <v-col cols="11" class="py-0"
-        ><v-textarea
+      <v-col cols="11" class="py-0">
+        <v-textarea
           v-model="message"
           solo
           dark
@@ -19,10 +19,10 @@
           no-resize
           single-line
           @keyup.enter="sendMessage"
-        ></v-textarea
-      ></v-col>
+        ></v-textarea>
+      </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>

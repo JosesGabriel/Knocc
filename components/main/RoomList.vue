@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 ma-0 bottomPanel--height">
+  <v-container class="pa-0 ma-0 overflow-y-auto overflow-x-hidden bottomPanel--height">
     <v-row>
       <v-col cols="12" class="pt-1">
         <v-btn
@@ -23,7 +23,7 @@
           <v-icon>{{
             invitesToggle ? "mdi-chevron-down" : "mdi-chevron-right"
           }}</v-icon>
-          <span class="font-weight-black body-2">INVITES</span>
+          <span class="font-weight-black no-transform body-2">Message Request</span>
         </v-btn>
       </v-col>
     </v-row>
@@ -65,7 +65,7 @@
           <v-icon>{{
             soloChatsToggle ? "mdi-chevron-down" : "mdi-chevron-right"
           }}</v-icon>
-          <span class="font-weight-black body-2">TRADERS</span>
+          <span class="font-weight-black no-transform body-2">Private Message</span>
         </v-btn>
         <v-btn
           icon
@@ -121,7 +121,7 @@
           <v-icon>{{
             communitiesListToggle ? "mdi-chevron-down" : "mdi-chevron-right"
           }}</v-icon>
-          <span class="font-weight-black body-2">TRADING COMMUNITIES</span>
+          <span class="font-weight-black no-transform body-2">Chat Rooms</span>
         </v-btn>
         <v-btn
           icon

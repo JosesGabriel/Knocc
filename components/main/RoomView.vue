@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 ma-0 roomView--height">
+  <div class="pa-0 ma-0 roomView--height">
     <div v-if="roomIsVisible" class="message__wrap" @scroll="scroll">
       <div
         v-for="(message, index) in messagesObject"
@@ -52,7 +52,7 @@
         >Reject</v-btn
       >
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script>
