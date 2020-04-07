@@ -25,7 +25,7 @@
 export default {
   methods: {
     redirectTo() {
-      window.location.href = "http://localhost:6969/sso";
+      window.location.href = `${process.env.API_URL}/login/sso/redirect?redirectUrl=https%3A%2F%2Fdev.lyduz.com%2Fsso`; 
     }
   }
 };

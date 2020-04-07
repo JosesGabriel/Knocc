@@ -15,7 +15,8 @@ export default {
   layout: "main",
   components: {
     Signin
-  }
+  },
+  middleware: ["vyndueAuth"]
 };
 </script>
 
