@@ -56,7 +56,7 @@ export default {
   beforeMount() {
     this.prepareClient();
   },
-  middleware: ["vyndueAuth"],
+  middleware: "vyndueAuth",
   methods: {
     ...mapActions({
       setUser: "global/setUser",

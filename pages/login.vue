@@ -16,7 +16,7 @@ export default {
   components: {
     Signin
   },
-  middleware: ["vyndueAuth"]
+  middleware: "vyndueAuth",
 };
 </script>
 
